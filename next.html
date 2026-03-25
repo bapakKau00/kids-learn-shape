@@ -5,20 +5,244 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shape Eby - Next Page! 🎈</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
+
+        :root {
+            --misi1-color: #4fc3f7;
+            --misi2-color: #ffb74d;
+            --misi3-color: #81c784;
+            --outline-color: #2c3e50;
+        }
+
         body {
-            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('page 2 enhance.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 50px; /* Lowered a bit as requested */
+            gap: 20px;
+            font-family: 'Fredoka', sans-serif;
+            overflow: hidden;
+        }
+
+        .mission-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .mission-button {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            animation: floatBtn 3s ease-in-out infinite;
+        }
+
+        .mission-button:nth-child(1) { animation-delay: 0s; }
+        .mission-button:nth-child(2) { animation-delay: 0.6s; }
+        .mission-button:nth-child(3) { animation-delay: 1.2s; }
+
+        .mission-button:hover {
+            transform: scale(1.05);
+            animation-play-state: paused;
+        }
+
+        .mission-button:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes floatBtn {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .circle-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 5px solid var(--outline-color);
+            background: var(--white, #fff);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #ff4081;
-            color: white;
-            margin: 0;
+            font-size: 35px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
         }
-        h1 { font-size: 3rem; }
+
+        .banner-wrap {
+            margin-left: -30px;
+            display: flex;
+            flex-direction: column;
+            width: 280px;
+            z-index: 1;
+            filter: drop-shadow(0 6px 0 rgba(0,0,0,0.1));
+        }
+
+        .banner-top {
+            background: var(--btn-color, var(--misi1-color));
+            border: 5px solid var(--outline-color);
+            border-radius: 0 35px 35px 0;
+            padding: 10px 20px 10px 45px;
+            color: white;
+            position: relative;
+        }
+
+        .banner-top::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            right: 20px;
+            width: 30px;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+        }
+
+        .banner-top h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+
+        .banner-bottom {
+            background: white;
+            border: 5px solid var(--outline-color);
+            border-top: none;
+            border-radius: 0 0 30px 0;
+            padding: 5px 20px 5px 45px;
+            margin-top: -5px;
+            margin-right: 20px;
+            text-align: left;
+        }
+
+        .banner-bottom p {
+            margin: 0;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--outline-color);
+        }
+
+        /* Floating Shapes Styles */
+        .shapes-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.4); /* Dark overlay to make shapes pop */
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.6;
+            animation: floatShape 10s infinite linear;
+        }
+
+        .shape.circle {
+            width: 60px;
+            height: 60px;
+            background: #ff4081;
+            border-radius: 50%;
+        }
+
+        .shape.square {
+            width: 50px;
+            height: 50px;
+            background: #ffeb3b;
+            transform: rotate(45deg);
+        }
+
+        .shape.triangle {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid #00e5ff;
+        }
+
+        @keyframes floatShape {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translate(100px, -100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Random positions for shapes */
+        .shape:nth-child(1) { left: 10%; bottom: -100px; animation-duration: 12s; }
+        .shape:nth-child(2) { left: 30%; bottom: -150px; animation-duration: 15s; animation-delay: 2s; }
+        .shape:nth-child(3) { left: 70%; bottom: -120px; animation-duration: 18s; animation-delay: 5s; }
+        .shape:nth-child(4) { left: 90%; bottom: -100px; animation-duration: 13s; animation-delay: 1s; }
+        .shape:nth-child(5) { left: 50%; bottom: -200px; animation-duration: 20s; animation-delay: 7s; }
+
     </style>
 </head>
 <body>
-    <h1>Welcome to the Next Page! 🎉</h1>
+    <div class="shapes-container">
+        <div class="shape circle"></div>
+        <div class="shape square"></div>
+        <div class="shape triangle"></div>
+        <div class="shape circle" style="background: #66bb6a; width: 40px; height: 40px;"></div>
+        <div class="shape square" style="background: #ab47bc; width: 30px; height: 30px;"></div>
+    </div>
+
+    <div class="mission-menu">
+        <!-- Mission 1 -->
+        <a href="radar.html" class="mission-button" style="--btn-color: var(--misi1-color);">
+            <div class="circle-icon">🔍</div>
+            <div class="banner-wrap">
+                <div class="banner-top">
+                    <h2>MISI 1:<br>RADAR BENTUK</h2>
+                </div>
+                <div class="banner-bottom">
+                    <p>Padankan Bentuk!</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Mission 2 -->
+        <a href="#" class="mission-button" style="--btn-color: var(--misi2-color);">
+            <div class="circle-icon">🎨</div>
+            <div class="banner-wrap">
+                <div class="banner-top">
+                    <h2>MISI 2:<br>WARNA WARNI</h2>
+                </div>
+                <div class="banner-bottom">
+                    <p>Pilih Warna Sesuai!</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Mission 3 -->
+        <a href="#" class="mission-button" style="--btn-color: var(--misi3-color);">
+            <div class="circle-icon">🎲</div>
+            <div class="banner-wrap">
+                <div class="banner-top">
+                    <h2>MISI 3:<br>MAIN TEKA</h2>
+                </div>
+                <div class="banner-bottom">
+                    <p>Teka Nama Bentuk!</p>
+                </div>
+            </div>
+        </a>
+    </div>
 </body>
 </html>
