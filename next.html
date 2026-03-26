@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shape Eby - Next Page! 🎈</title>
+    <link rel="icon" type="image/png" href="assets/images/shapes.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
 
@@ -193,6 +194,78 @@
         .shape:nth-child(4) { left: 90%; bottom: -100px; animation-duration: 13s; animation-delay: 1s; }
         .shape:nth-child(5) { left: 50%; bottom: -200px; animation-duration: 20s; animation-delay: 7s; }
 
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .login-popup {
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            border: 10px solid var(--misi3-color);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .login-popup h2 {
+            color: var(--misi3-color);
+            font-size: 2.5rem;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        .login-popup input {
+            width: 80%;
+            padding: 15px 25px;
+            font-size: 1.5rem;
+            border: 4px solid #ddd;
+            border-radius: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .login-popup input:focus {
+            border-color: var(--misi3-color);
+        }
+
+        .btn-start-misi {
+            background: var(--misi3-color);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 30px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #388e3c;
+            transition: transform 0.1s;
+        }
+
+        .btn-start-misi:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #388e3c;
+        }
     </style>
 </head>
 <body>
@@ -232,7 +305,7 @@
         </a>
 
         <!-- Mission 3 -->
-        <a href="master-detektif.html" class="mission-button" style="--btn-color: var(--misi3-color);">
+        <div onclick="startMisi3()" class="mission-button" style="--btn-color: var(--misi3-color);">
             <div class="circle-icon">🏆</div>
             <div class="banner-wrap">
                 <div class="banner-top">
@@ -242,7 +315,17 @@
                     <p>Bentuk & Saiz!</p>
                 </div>
             </div>
-        </a>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="name-popup">
+        <div class="login-popup">
+            <h2>SIAPA NAMA KAMU? 🕵️‍♂️</h2>
+            <p style="font-size: 1.2rem; color: #666;">Sila masukkan nama kamu untuk simpan markah detektif!</p>
+            <input type="text" id="player-name" placeholder="Nama Kamu Di Sini..." maxlength="15">
+            <br>
+            <button class="btn-start-misi" onclick="confirmName()">MULA! 🚀</button>
+        </div>
     </div>
 
     <!-- Background Music -->
@@ -259,6 +342,31 @@
         };
         playMusic();
         setInterval(() => { localStorage.setItem('bgMusicTime', bgMusic.currentTime); }, 1000);
+
+        function startMisi3() {
+            document.getElementById('name-popup').style.display = 'flex';
+            document.getElementById('player-name').focus();
+        }
+
+        function confirmName() {
+            const name = document.getElementById('player-name').value.trim();
+            if (name === "") {
+                alert("Sila masukkan nama kamu ya! 😊");
+                return;
+            }
+            sessionStorage.setItem('eby_player_name', name);
+            window.location.href = 'master-detektif.html';
+        }
+
+        // Clear old scores ONE TIME (Requested by user)
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('ebymaster_v2_reset')) {
+                localStorage.removeItem('ebymaster_scores');
+                localStorage.removeItem('ebymaster2_scores');
+                localStorage.removeItem('ebymaster_overall_scores');
+                localStorage.setItem('ebymaster_v2_reset', 'true');
+            }
+        });
 
         // Hover sound for all interactive elements
         const hoverSound = document.createElement('audio');

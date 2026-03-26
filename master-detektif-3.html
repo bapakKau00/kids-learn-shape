@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shape Eby - Master Detektif Tahap Akhir! 🏆🔍</title>
+    <title>Master Detektif 3 - Shape Eby! 🕵️‍♂️</title>
+    <link rel="icon" type="image/png" href="assets/images/shapes.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -314,9 +315,19 @@
     </div>
 
     <!-- Audio -->
-    <audio id="sound-correct" src="assets/audio/catch correct.mp3"></audio>
+    <audio id="sound-correct" src="assets/audio/correct click element.mp3"></audio>
     <audio id="sound-wrong" src="assets/audio/wrong catch.mp3"></audio>
     <audio id="sound-victory" src="assets/audio/yayyy-sound.mp3"></audio>
+
+    <!-- Misi 3 Voice Overs -->
+    <audio id="vo-level3" src="assets/audio/misi 3/level 3.ogg"></audio>
+    <audio id="vo-bulat-besar" src="assets/audio/misi 3/bulat besar.ogg"></audio>
+    <audio id="vo-bulat-kecil" src="assets/audio/misi 3/bulat kecil.ogg"></audio>
+    <audio id="vo-segi-empat-sama-besar" src="assets/audio/misi 3/segi empat sama besar.ogg"></audio>
+    <audio id="vo-segi-empat-sama-kecil" src="assets/audio/misi 3/segi empat sama kecil.ogg"></audio>
+    <audio id="vo-segi-empat-tepat-besar" src="assets/audio/misi 3/segi empat tepat besar.ogg"></audio>
+    <audio id="vo-segi-empat-tepat-kecil" src="assets/audio/misi 3/segi empat tepat kecil.ogg"></audio>
+    <audio id="vo-segi-tiga-kecil" src="assets/audio/misi 3/segi tiga kecil.ogg"></audio>
 
     <!-- Victory Popup -->
     <div class="popup-overlay" id="victory-popup">
@@ -425,7 +436,7 @@
                     handleInteraction(e);
                 });
 
-                updateUI();
+                updateUI(false);
             } catch (err) {
                 console.error("Error loading SVG:", err);
             }
@@ -446,16 +457,44 @@
             return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        function updateUI() {
+        function updateUI(playAudio = true) {
             const round = rounds[currentRound];
             document.getElementById('target-shape').innerHTML = round.shape;
             document.getElementById('target-size').innerHTML = round.size;
+            
+            // Play shape-size audio only if requested (not on initial load)
+            if (playAudio) playTargetAudio(round.shape, round.size);
+        }
+
+        function playTargetAudio(shape, size) {
+            const shapeMap = {
+                "Bulat": "bulat",
+                "Segi Empat Sama": "segi-empat-sama",
+                "Segi Empat Tepat": "segi-empat-tepat",
+                "Segi Tiga": "segi-tiga"
+            };
+            const sizeMap = {
+                "Besar": "besar",
+                "Kecil": "kecil"
+            };
+            const id = `vo-${shapeMap[shape]}-${sizeMap[size]}`;
+            const audio = document.getElementById(id);
+            if (audio) audio.play().catch(() => {});
         }
 
         function startGame() {
             document.getElementById('start-popup').style.display = 'none';
+            
+            // Stop intro audio
+            const intro = document.getElementById('vo-level3');
+            intro.pause();
+            intro.currentTime = 0;
+
             startTimer();
             canClick = true;
+            
+            // Start the first shape instruction
+            updateUI(true);
         }
 
         function handleInteraction(event) {
@@ -468,7 +507,6 @@
                 // Correct
                 canClick = false;
                 document.getElementById('sound-correct').play();
-                showHighlight(event.clientX, event.clientY);
 
                 setTimeout(() => {
                     currentRound++;
@@ -487,22 +525,12 @@
 
         function triggerMiss() {
             document.getElementById('sound-wrong').play();
-            const feedback = document.getElementById('incorrect-feedback');
-            feedback.style.display = 'block';
             document.querySelector('.game-wrapper').style.animation = 'shake 0.5s';
 
             setTimeout(() => {
-                feedback.style.display = 'none';
                 document.querySelector('.game-wrapper').style.animation = '';
+                canClick = true;
             }, 500);
-        }
-
-        function showHighlight(x, y) {
-            const highlight = document.getElementById('circle-highlight');
-            highlight.style.left = `${x}px`;
-            highlight.style.top = `${y}px`;
-            highlight.classList.add('show');
-            setTimeout(() => highlight.classList.remove('show'), 800);
         }
 
         function victory() {
@@ -524,7 +552,7 @@
             const totalAverage = Math.floor((l1 + l2 + l3) / count);
             document.getElementById('average-time').innerHTML = formatTime(totalAverage);
 
-            saveScore(totalAverage);
+            saveOverallScore(finalTimeStr, Math.floor(totalAverage / 1000));
             displayLeaderboard();
 
             setTimeout(() => {
@@ -532,10 +560,11 @@
             }, 500);
         }
 
-        function saveScore(avgMs) {
+        function saveOverallScore(timeStr, avgSeconds) {
             let scores = JSON.parse(localStorage.getItem('ebymaster_overall_scores') || '[]');
-            scores.push({ time: avgMs, date: new Date().toLocaleDateString() });
-            scores.sort((a, b) => a.time - b.time);
+            const playerName = sessionStorage.getItem('eby_player_name') || 'Pakar';
+            scores.push({ name: playerName, time: timeStr, seconds: avgSeconds, date: new Date().toLocaleDateString() });
+            scores.sort((a, b) => a.seconds - b.seconds);
             scores = scores.slice(0, 5);
             localStorage.setItem('ebymaster_overall_scores', JSON.stringify(scores));
         }
@@ -545,17 +574,20 @@
             const list = document.getElementById('leaderboard-list');
             list.innerHTML = scores.map((s, i) => `
                 <div class="leaderboard-item">
-                    <span>#${i + 1} Purata Pakar</span>
-                    <span style="color: #4CAF50; font-weight: bold;">${formatTime(s.time)}</span>
+                    <span>#${i + 1} ${s.name}</span>
+                    <span>${s.time}</span>
                 </div>
-            `).join('');
-            if (scores.length === 0) list.innerHTML = '<div style="text-align:center;">Belum ada rekod. ✨</div>';
+            `).join('') || '<div style="color: #999; padding: 10px;">Belum ada rekod...</div>';
         }
 
         window.onload = () => {
             initGame();
             initRain();
             canClick = false; // Disable clicks until Start button is pressed
+            document.getElementById('vo-level3').play().catch(() => {
+                // Autoplay may be blocked, wait for first click if needed
+                document.addEventListener('click', () => document.getElementById('vo-level3').play(), { once: true });
+            });
         };
     </script>
     <!-- Background Music -->
