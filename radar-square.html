@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shape Eby - Mula Radar! 📡</title>
+    <title>Shape Eby - Misi Radar Segi Empat Sama! 📡</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Coiny&display=swap" rel="stylesheet">
@@ -57,10 +57,10 @@
             padding: 10px 20px;
             border-radius: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            color: #4caf50;
+            color: #2196F3; /* Blue for Square Mission */
             font-size: 1.5rem;
             z-index: 15;
-            border: 3px solid #4caf50;
+            border: 3px solid #2196F3;
         }
 
         /* Draggable Shapes */
@@ -74,8 +74,6 @@
             z-index: 10;
         }
 
-
-
         .shape.sorting {
             transform: scale(0) translate(0, 100px);
             opacity: 0;
@@ -86,7 +84,7 @@
         .middle-slots {
             position: absolute;
             left: 40%;
-            top: 255px; /* Nudged down from 100px */
+            top: 255px;
             transform: translateX(-50%);
             display: flex;
             flex-direction: row;
@@ -97,8 +95,8 @@
         .item-slot {
             width: 120px;
             height: 120px;
-            background: #FFFFFF; /* Pure white for kids */
-            border: 5px solid #D77D14; /* Friendly matching border */
+            background: #FFFFFF;
+            border: 5px solid #D77D14;
             border-radius: 20px;
             display: flex;
             justify-content: center;
@@ -122,12 +120,12 @@
         }
 
         .shape {
-            position: absolute; /* Relative to slot center */
+            position: absolute;
             font-size: 60px;
             cursor: grab;
             user-select: none;
             touch-action: none;
-            pointer-events: auto; /* ENABLES CLICKING ON THE EMOJI */
+            pointer-events: auto;
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 100;
@@ -153,7 +151,7 @@
             background: white;
             padding: 40px;
             border-radius: 40px;
-            border: 10px solid #FFEB3B;
+            border: 10px solid #2196F3;
             width: 80%;
             max-width: 600px;
             text-align: center;
@@ -164,7 +162,7 @@
         }
 
         .learning-popup h2 {
-            color: #4CAF50;
+            color: #2196F3;
             font-size: 2.5rem;
             margin-bottom: 20px;
             font-family: 'Fredoka', sans-serif;
@@ -235,7 +233,7 @@
 
         .shelf-wrapper {
             position: absolute;
-            right: -700px; /* Hide approx half of the 1100px shelf */
+            right: -700px;
             bottom: 250px;
             width: auto;
             display: flex;
@@ -246,10 +244,9 @@
 
         .shelf {
             width: 1100px;
-            border-bottom: solid 23px #C89666; /* Light Wood */
+            border-bottom: solid 23px #C89666;
             position: relative;
             perspective: 150px;
-            
             border-radius: 2px;
         }
 
@@ -270,11 +267,10 @@
             width: calc(100% - 100px);
             display: flex;
             justify-content: space-around;
-            border-bottom: solid 50px #E1B382; /* Lighter Wood Base */
+            border-bottom: solid 50px #E1B382;
             margin: 0 auto;
             box-sizing: border-box;
             position: relative;
-            /* White Stroke on horizontal join */
         }
 
         .cases::before {
@@ -287,7 +283,6 @@
             position: absolute;
             left: -50px;
             bottom: -50px;
-            /* Side stroke */
         }
 
         .cases::after {
@@ -300,7 +295,6 @@
             position: absolute;
             right: -50px;
             bottom: -50px;
-            /* Side stroke */
         }
 
         .case {
@@ -314,7 +308,6 @@
             overflow: visible;
         }
 
-        /* Animated Box Container */
         .box-wrapper {
             width: 260px;
             height: 260px;
@@ -322,7 +315,7 @@
             transition: transform 0.3s ease;
             position: relative;
             z-index: 10;
-            margin-bottom: -20px;  /* Seats the box on the shelf */
+            margin-bottom: -20px;
         }
 
         svg#box-svg {
@@ -348,8 +341,8 @@
             background: white;
             padding: 5px 15px;
             border-radius: 10px;
-            border: 3px solid #D77D14;
-            color: #D77D14;
+            border: 3px solid #2196F3;
+            color: #2196F3;
             font-size: 1.1rem;
             white-space: nowrap;
             pointer-events: none;
@@ -359,22 +352,22 @@
 </head>
 
 <body>
-    <a href="radar.html" class="back-button">Kembali</a>
-    <div class="instruction-tag">Masukkan Bentuk Bulat ke dalam Kotak</div>
+    <a href="radar-start.html" class="back-button">Kembali</a>
+    <div class="instruction-tag">Masukkan Bentuk Segi Empat Sama ke dalam Kotak</div>
 
     <div class="shape-container" id="game-space">
         <div class="middle-slots">
             <div class="item-slot">
-                <div class="shape" data-shape="square" style="--color: #FF5252;" onpointerdown="startDrag(event)">🎲</div>
+                <div class="shape" data-shape="square" style="--color: #FF5252;" onpointerdown="startDrag(event)">📖</div>
             </div>
             <div class="item-slot">
-                <div class="shape" data-shape="round" style="--color: #FFEB3B;" onpointerdown="startDrag(event)">⚽</div>
+                <div class="shape" data-shape="triangle" style="--color: #FFEB3B;" onpointerdown="startDrag(event)">🍰</div>
             </div>
             <div class="item-slot">
-                <div class="shape" data-shape="round" style="--color: #4CAF50;" onpointerdown="startDrag(event)">⏰</div>
+                <div class="shape" data-shape="triangle" style="--color: #4CAF50;" onpointerdown="startDrag(event)">🚩</div>
             </div>
             <div class="item-slot">
-                <div class="shape" data-shape="square" style="--color: #2196F3;" onpointerdown="startDrag(event)">📦</div>
+                <div class="shape" data-shape="square" style="--color: #2196F3;" onpointerdown="startDrag(event)">📄</div>
             </div>
         </div>
     </div>
@@ -417,7 +410,7 @@
                                 </g>
                             </g>
                         </svg>
-                        <div class="box-label">KOTAK BULAT</div>
+                        <div class="box-label">Kotak Segi Empat Sama</div>
                     </div>
                 </div>
             </div>
@@ -428,17 +421,17 @@
         <div class="learning-popup">
             <h2>Hebat!</h2>
             <div class="explanation">
-                Kamu sudah kumpulkan semua bentuk <b>BULAT</b>! <br><br>
-                Kenapa dadu dan kotak salah? Kerana mereka adalah bentuk <b>SEGIBEMPAT</b> (Square)!
+                Kamu sudah kumpulkan semua bentuk <b>Segi Empat Sama</b>! <br><br>
+                Kenapa kek dan bendera salah?<br>Kerana mereka adalah bentuk <b>SEGI TIGA</b>
             </div>
             <div class="comparison">
-                <div class="comparison-item">⚽</div>
-                <div class="comparison-item">⏰</div>
-                <div class="comparison-item wrong">🎲</div>
-                <div class="comparison-item wrong">📦</div>
+                <div class="comparison-item wrong">🍰</div>
+                <div class="comparison-item wrong">🚩</div>
+                <div class="comparison-item">📘</div>
+                <div class="comparison-item">📄</div>
             </div>
             <div class="explanation">
-                Dadu dan Kotak ada bucu yang tajam, tapi Bulat tiada bucu!
+                Bulat tiada bucu, tapi Segi Empat Sama ada 4 bucu yang tajam dan panjang sisi yang sama!
             </div>
             <button class="btn-continue" onclick="closePopup()">Jom Terus!</button>
         </div>
@@ -458,7 +451,6 @@
             originalParent = dragItem.parentElement;
             originalRect = dragItem.getBoundingClientRect();
             
-            // Move to body for global tracking
             document.body.appendChild(dragItem);
             
             offsetX = e.clientX - originalRect.left;
@@ -505,17 +497,15 @@
 
             const boxRect = box.getBoundingClientRect();
             const itemRect = dragItem.getBoundingClientRect();
-            const isRound = dragItem.dataset.shape === 'round';
+            const isSquare = dragItem.dataset.shape === 'square';
 
-            // Check if dropped in box
             if (
                 itemRect.right > boxRect.left &&
                 itemRect.left < boxRect.right &&
                 itemRect.bottom > boxRect.top &&
                 itemRect.top < boxRect.bottom
             ) {
-                if (isRound) {
-                    // Correct Shape!
+                if (isSquare) {
                     soundCorrect.play();
                     dragItem.classList.add('sorting');
                     setTimeout(() => {
@@ -525,12 +515,10 @@
                         checkWin();
                     }, 500);
                 } else {
-                    // Wrong Shape!
                     soundWrong.play();
                     snapBack();
                 }
             } else {
-                // Not dropped in box
                 snapBack();
             }
         }
@@ -538,7 +526,6 @@
         function snapBack() {
             if (!dragItem) return;
             
-            // Re-center in the original slot
             dragItem.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
             dragItem.style.left = originalRect.left + 'px';
             dragItem.style.top = originalRect.top + 'px';
@@ -558,9 +545,9 @@
         }
 
         function checkWin() {
-            const remainingRound = document.querySelectorAll('.shape[data-shape="round"]:not(.sorting)');
-            if (remainingRound.length === 0) {
-                document.querySelector('.instruction-tag').innerHTML = "Hebat! Kamu sudah jumpa semua bentuk bulat! ⭐⭐⭐";
+            const remainingSquare = document.querySelectorAll('.shape[data-shape="square"]:not(.sorting)');
+            if (remainingSquare.length === 0) {
+                document.querySelector('.instruction-tag').innerHTML = "Hebat! Kamu sudah jumpa semua bentuk segi empat sama! ⭐⭐⭐";
                 setTimeout(() => {
                     document.getElementById('learning-popup').style.display = 'flex';
                 }, 1000);
@@ -568,7 +555,7 @@
         }
 
         function closePopup() {
-            window.location.href = "radar-square.html";
+            window.location.href = "radar-triangle.html";
         }
     </script>
 </body>
