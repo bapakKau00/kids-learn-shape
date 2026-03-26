@@ -260,24 +260,28 @@
 
 <body>
     <a href="radar.html" class="back-button">Kembali</a>
-    <div class="instruction-tag">Masukkan Bentuk Bulat ke dalam Kotak! 🔵</div>
+    <div class="instruction-tag">Masukkan Bentuk Bulat ke dalam Kotak</div>
 
     <div class="shape-container" id="game-space">
         <div class="middle-slots">
             <div class="item-slot">
-                <div class="shape" style="--color: #FF5252;" onpointerdown="startDrag(event)">⚽</div>
+                <div class="shape" data-shape="square" style="--color: #FF5252;" onpointerdown="startDrag(event)">🎲</div>
             </div>
             <div class="item-slot">
-                <div class="shape" style="--color: #FFEB3B;" onpointerdown="startDrag(event)">🍊</div>
+                <div class="shape" data-shape="round" style="--color: #FFEB3B;" onpointerdown="startDrag(event)">⚽</div>
             </div>
             <div class="item-slot">
-                <div class="shape" style="--color: #4CAF50;" onpointerdown="startDrag(event)">🎾</div>
+                <div class="shape" data-shape="round" style="--color: #4CAF50;" onpointerdown="startDrag(event)">⏰</div>
             </div>
             <div class="item-slot">
-                <div class="shape" style="--color: #2196F3;" onpointerdown="startDrag(event)">🍩</div>
+                <div class="shape" data-shape="square" style="--color: #2196F3;" onpointerdown="startDrag(event)">📦</div>
             </div>
         </div>
     </div>
+
+    <!-- Audio Feedback -->
+    <audio id="sound-correct" src="catch correct.mp3"></audio>
+    <audio id="sound-wrong" src="wrong catch.mp3"></audio>
 
     <div class="shelf-wrapper">
         <div class="shelf">
@@ -323,25 +327,29 @@
     <script>
         let dragItem = null;
         let offsetX, offsetY;
+        let originalParent = null;
+        let originalRect = null;
         const box = document.getElementById('box-container');
+        const soundCorrect = document.getElementById('sound-correct');
+        const soundWrong = document.getElementById('sound-wrong');
 
         function startDrag(e) {
             dragItem = e.target;
-            const rect = dragItem.getBoundingClientRect();
+            originalParent = dragItem.parentElement;
+            originalRect = dragItem.getBoundingClientRect();
             
-            // Move to body to avoid container offsets & centering math
+            // Move to body for global tracking
             document.body.appendChild(dragItem);
             
-            offsetX = e.clientX - rect.left;
-            offsetY = e.clientY - rect.top;
+            offsetX = e.clientX - originalRect.left;
+            offsetY = e.clientY - originalRect.top;
 
-            // Reset styles to track cursor perfectly
             dragItem.style.position = 'fixed';
             dragItem.style.zIndex = '1000';
             dragItem.style.margin = '0';
             dragItem.style.transform = 'none';
-            dragItem.style.left = rect.left + 'px';
-            dragItem.style.top = rect.top + 'px';
+            dragItem.style.left = originalRect.left + 'px';
+            dragItem.style.top = originalRect.top + 'px';
 
             dragItem.setPointerCapture(e.pointerId);
             dragItem.onpointermove = doDrag;
@@ -377,31 +385,61 @@
 
             const boxRect = box.getBoundingClientRect();
             const itemRect = dragItem.getBoundingClientRect();
+            const isRound = dragItem.dataset.shape === 'round';
 
+            // Check if dropped in box
             if (
                 itemRect.right > boxRect.left &&
                 itemRect.left < boxRect.right &&
                 itemRect.bottom > boxRect.top &&
                 itemRect.top < boxRect.bottom
             ) {
-                dragItem.classList.add('sorting');
-                setTimeout(() => {
-                    dragItem.remove();
-                    dragItem = null;
-                    box.classList.remove('open');
-                    checkWin();
-                }, 500);
+                if (isRound) {
+                    // Correct Shape!
+                    soundCorrect.play();
+                    dragItem.classList.add('sorting');
+                    setTimeout(() => {
+                        dragItem.remove();
+                        dragItem = null;
+                        box.classList.remove('open');
+                        checkWin();
+                    }, 500);
+                } else {
+                    // Wrong Shape!
+                    soundWrong.play();
+                    snapBack();
+                }
             } else {
+                // Not dropped in box
+                snapBack();
+            }
+        }
+
+        function snapBack() {
+            if (!dragItem) return;
+            
+            // Re-center in the original slot
+            dragItem.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            dragItem.style.left = originalRect.left + 'px';
+            dragItem.style.top = originalRect.top + 'px';
+
+            setTimeout(() => {
+                dragItem.style.transition = '';
+                dragItem.style.position = 'absolute';
+                dragItem.style.left = '';
+                dragItem.style.top = '';
+                originalParent.appendChild(dragItem);
+                
                 dragItem.onpointermove = null;
                 dragItem.onpointerup = null;
                 dragItem = null;
                 box.classList.remove('open');
-            }
+            }, 400);
         }
 
         function checkWin() {
-            const remaining = document.querySelectorAll('.shape:not(.sorting)');
-            if (remaining.length === 0) {
+            const remainingRound = document.querySelectorAll('.shape[data-shape="round"]:not(.sorting)');
+            if (remainingRound.length === 0) {
                 document.querySelector('.instruction-tag').innerHTML = "Bagus! Kamu Hebat! ⭐⭐⭐";
                 setTimeout(() => {
                     window.location.href = "next.html";
