@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +39,7 @@
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-            background: #ff4081; /* Pink for Back */
+            background: #ff4081;
             z-index: 10;
         }
 
@@ -50,34 +51,186 @@
         /* Instructions */
         .instruction-tag {
             position: absolute;
-            top: 100px;
+            top: 60px;
             background: rgba(255, 255, 255, 0.9);
             padding: 10px 20px;
             border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             color: #4caf50;
             font-size: 1.5rem;
-            z-index: 5;
+            z-index: 15;
             border: 3px solid #4caf50;
+        }
+
+        /* Draggable Shapes */
+        .shape-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+
+
+        .shape.sorting {
+            transform: scale(0) translate(0, 100px);
+            opacity: 0;
+            transition: all 0.5s ease-in;
+        }
+
+        /* Middle Item Slots */
+        .middle-slots {
+            position: absolute;
+            left: 40%;
+            top: 255px; /* Nudged down from 100px */
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            z-index: 2;
+        }
+
+        .item-slot {
+            width: 120px;
+            height: 120px;
+            background: #FFFFFF; /* Pure white for kids */
+            border: 5px solid #D77D14; /* Friendly matching border */
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 
+                0 10px 0 rgba(0,0,0,0.1),
+                inset 0 0 10px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .item-slot::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 20px;
+            background: rgba(0,0,0,0.05);
+            bottom: -25px;
+            border-radius: 10px;
+            filter: blur(8px);
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute; /* Relative to slot center */
+            font-size: 60px;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+            pointer-events: auto; /* ENABLES CLICKING ON THE EMOJI */
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+        }
+
+        /* Funko-Style Shelf Styling (Half-Visible on Right) */
+        .shelf-wrapper {
+            position: absolute;
+            right: -700px; /* Hide approx half of the 1100px shelf */
+            bottom: 250px;
+            width: auto;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .shelf {
+            width: 1100px;
+            border-bottom: solid 23px #C89666; /* Light Wood */
+            position: relative;
+            perspective: 150px;
+            
+            border-radius: 2px;
+        }
+
+        .shelf::after {
+            content: "";
+            position: absolute;
+            bottom: -30px;
+            left: 50px;
+            right: 50px;
+            height: 35px;
+            background: transparent;
+            transform: rotateX(-25deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            z-index: -1;
+        }
+
+        .cases {
+            width: calc(100% - 100px);
+            display: flex;
+            justify-content: space-around;
+            border-bottom: solid 50px #E1B382; /* Lighter Wood Base */
+            margin: 0 auto;
+            box-sizing: border-box;
+            position: relative;
+            /* White Stroke on horizontal join */
+        }
+
+        .cases::before {
+            content: "";
+            width: 0px;
+            height: 0px;
+            border-style: solid;
+            border-width: 0 0 50px 50px;
+            border-color: transparent transparent #E1B382 transparent;
+            position: absolute;
+            left: -50px;
+            bottom: -50px;
+            /* Side stroke */
+        }
+
+        .cases::after {
+            content: "";
+            width: 0px;
+            height: 0px;
+            border-style: solid;
+            border-width: 50px 0 0 50px;
+            border-color: transparent transparent transparent #E1B382;
+            position: absolute;
+            right: -50px;
+            bottom: -50px;
+            /* Side stroke */
+        }
+
+        .case {
+            width: 200px;
+            height: 250px;
+            position: relative;
+            top: 43px;
+            display: flex;
+            justify-content: center;
+            align-items: end;
+            overflow: visible;
         }
 
         /* Animated Box Container */
         .box-wrapper {
-            width: 300px;
-            height: 300px;
+            width: 260px;
+            height: 260px;
             cursor: pointer;
             transition: transform 0.3s ease;
             position: relative;
-            z-index: 5;
-            margin-top: 100px;
+            z-index: 10;
+            margin-bottom: -20px;  /* Seats the box on the shelf */
         }
 
         svg#box-svg {
             width: 100%;
             height: 100%;
+            transform: translateX(-45%);
         }
 
-        /* Animation Classes for Detective Box */
         .lid {
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -87,83 +240,84 @@
             opacity: 0.8;
         }
 
-        /* Draggable Shapes */
-        .shape-container {
+        .box-label {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            bottom: -10px;
+            left: 5%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 5px 15px;
+            border-radius: 10px;
+            border: 3px solid #D77D14;
+            color: #D77D14;
+            font-size: 1.1rem;
+            white-space: nowrap;
             pointer-events: none;
-        }
-
-        .shape {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%; /* Round Shape */
-            background: radial-gradient(circle at 30% 30%, var(--color), #000);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            cursor: grab;
-            pointer-events: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 2rem;
-            border: 4px solid white;
-            transition: transform 0.2s, box-shadow 0.2s;
-            user-select: none;
-            touch-action: none;
-        }
-
-        .shape:active {
-            cursor: grabbing;
-            transform: scale(1.1);
-            z-index: 100;
-        }
-
-        .shape.sorting {
-            transform: scale(0) translate(0, 100px);
-            opacity: 0;
-            transition: all 0.5s ease-in;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
+
 <body>
     <a href="radar.html" class="back-button">Kembali</a>
     <div class="instruction-tag">Masukkan Bentuk Bulat ke dalam Kotak! 🔵</div>
 
     <div class="shape-container" id="game-space">
-        <!-- Draggable items will be here -->
-        <div class="shape" style="--color: #FF5252; top: 20%; left: 15%;" onpointerdown="startDrag(event)">⚽</div>
-        <div class="shape" style="--color: #FFEB3B; top: 25%; left: 75%;" onpointerdown="startDrag(event)">🍊</div>
-        <div class="shape" style="--color: #4CAF50; top: 60%; left: 10%;" onpointerdown="startDrag(event)">🎾</div>
-        <div class="shape" style="--color: #2196F3; top: 65%; left: 80%;" onpointerdown="startDrag(event)">🍩</div>
+        <div class="middle-slots">
+            <div class="item-slot">
+                <div class="shape" style="--color: #FF5252;" onpointerdown="startDrag(event)">⚽</div>
+            </div>
+            <div class="item-slot">
+                <div class="shape" style="--color: #FFEB3B;" onpointerdown="startDrag(event)">🍊</div>
+            </div>
+            <div class="item-slot">
+                <div class="shape" style="--color: #4CAF50;" onpointerdown="startDrag(event)">🎾</div>
+            </div>
+            <div class="item-slot">
+                <div class="shape" style="--color: #2196F3;" onpointerdown="startDrag(event)">🍩</div>
+            </div>
+        </div>
     </div>
 
-    <div class="box-wrapper" id="box-container">
-        <svg id="box-svg" viewBox="190 90 120 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
-            <g id="OBJECTS">
-                <g>
-                    <ellipse style="fill:#C8E6EB;" cx="250" cy="174.934" rx="56.059" ry="5.192"/>
-                    <g>
-                        <!-- Box Body -->
-                        <polygon style="fill:#C47212;" points="230.955,103.212 296.266,107.195 296.266,174.486 230.955,170.504"/>
-                        <polygon style="fill:#D77D14;" points="230.955,103.212 204.489,107.195 204.489,174.486 230.955,170.504"/>
-                        <polygon style="fill:#E69632;" points="269.8,178.469 204.489,174.486 204.489,107.195 269.8,111.177"/>
-                        <polygon style="fill:#D77D14;" points="269.8,178.469 296.266,174.486 296.266,107.195 269.8,111.177"/>
-                        
-                        <!-- Lid / Flaps Group -->
-                        <g class="lid lid-top">
-                            <polygon style="fill:#D77D14;" points="230.096,95.174 201.986,99.404 201.986,114.173 230.096,109.943"/>
-                            <polygon style="fill:#C47212;" points="230.096,95.174 297.873,99.404 297.873,114.173 230.096,109.943"/>
-                            <polygon style="fill:#E69632;" points="269.762,118.403 201.986,114.173 201.986,99.404 269.762,103.633"/>
-                            <polygon style="fill:#D77D14;" points="269.762,118.403 297.873,114.173 297.873,99.404 269.762,103.633"/>
-                            <polygon style="fill:#FFAE55;" points="201.986,99.404 230.096,95.174 297.873,99.404 269.762,103.633"/>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg>
+    <div class="shelf-wrapper">
+        <div class="shelf">
+            <div class="cases">
+                <div class="case" style="width: 100%; display: flex; justify-content: center; transform: translateX(-250px);">
+                    <div class="box-wrapper" id="box-container">
+                        <svg id="box-svg" viewBox="190 90 120 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <g id="OBJECTS">
+                                <g>
+                                    <ellipse style="fill:rgba(0,0,0,0.1);" cx="250" cy="174.934" rx="56.059" ry="5.192" />
+                                    <g>
+                                        <polygon style="fill:#C47212;"
+                                            points="230.955,103.212 296.266,107.195 296.266,174.486 230.955,170.504" />
+                                        <polygon style="fill:#D77D14;"
+                                            points="230.955,103.212 204.489,107.195 204.489,174.486 230.955,170.504" />
+                                        <polygon style="fill:#E69632;"
+                                            points="269.8,178.469 204.489,174.486 204.489,107.195 269.8,111.177" />
+                                        <polygon style="fill:#D77D14;"
+                                            points="269.8,178.469 296.266,174.486 296.266,107.195 269.8,111.177" />
+                                        <g class="lid lid-top">
+                                            <polygon style="fill:#B86A11;"
+                                                points="230.096,95.174 201.986,99.404 201.986,114.173 230.096,109.943" />
+                                            <polygon style="fill:#9E5A0E;"
+                                                points="230.096,95.174 297.873,99.404 297.873,114.173 230.096,109.943" />
+                                            <polygon style="fill:#C47212;"
+                                                points="269.762,118.403 201.986,114.173 201.986,99.404 269.762,103.633" />
+                                            <polygon style="fill:#B86A11;"
+                                                points="269.762,118.403 297.873,114.173 297.873,99.404 269.762,103.633" />
+                                            <polygon style="fill:#E69632;"
+                                                points="201.986,99.404 230.096,95.174 297.873,99.404 269.762,103.633" />
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        <div class="box-label">KOTAK BULAT</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -174,9 +328,21 @@
         function startDrag(e) {
             dragItem = e.target;
             const rect = dragItem.getBoundingClientRect();
+            
+            // Move to body to avoid container offsets & centering math
+            document.body.appendChild(dragItem);
+            
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
-            
+
+            // Reset styles to track cursor perfectly
+            dragItem.style.position = 'fixed';
+            dragItem.style.zIndex = '1000';
+            dragItem.style.margin = '0';
+            dragItem.style.transform = 'none';
+            dragItem.style.left = rect.left + 'px';
+            dragItem.style.top = rect.top + 'px';
+
             dragItem.setPointerCapture(e.pointerId);
             dragItem.onpointermove = doDrag;
             dragItem.onpointerup = endDrag;
@@ -184,14 +350,13 @@
 
         function doDrag(e) {
             if (!dragItem) return;
-            
+
             const x = e.clientX - offsetX;
             const y = e.clientY - offsetY;
-            
+
             dragItem.style.left = x + 'px';
             dragItem.style.top = y + 'px';
 
-            // Collision Detection
             const boxRect = box.getBoundingClientRect();
             const itemRect = dragItem.getBoundingClientRect();
 
@@ -213,14 +378,12 @@
             const boxRect = box.getBoundingClientRect();
             const itemRect = dragItem.getBoundingClientRect();
 
-            // Simple "Suck-in" check on drop
             if (
                 itemRect.right > boxRect.left &&
                 itemRect.left < boxRect.right &&
                 itemRect.bottom > boxRect.top &&
                 itemRect.top < boxRect.bottom
             ) {
-                // Success! Sort the item
                 dragItem.classList.add('sorting');
                 setTimeout(() => {
                     dragItem.remove();
@@ -247,4 +410,5 @@
         }
     </script>
 </body>
+
 </html>
