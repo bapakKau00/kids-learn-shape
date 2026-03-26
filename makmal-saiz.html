@@ -14,7 +14,7 @@
             padding: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('page 4.png');
+            background-image: url('assets/images/page 4.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -321,9 +321,16 @@
     <div class="feedback-overlay" id="feedback-overlay">✅</div>
 
     <!-- Audio Feedback -->
-    <audio id="sound-correct" src="catch correct.mp3"></audio>
-    <audio id="sound-wrong" src="wrong catch.mp3"></audio>
-    <audio id="sound-yay" src="yayyy-sound.mp3"></audio>
+    <audio id="sound-correct" src="assets/audio/catch correct.mp3"></audio>
+    <audio id="sound-wrong" src="assets/audio/wrong catch.mp3"></audio>
+    <audio id="sound-yay" src="assets/audio/yayyy-sound.mp3"></audio>
+
+    <!-- Mission 2 Voice Overs -->
+    <audio id="vo-buku" src="assets/audio/misi 2/buku teks.ogg"></audio>
+    <audio id="vo-pembaris" src="assets/audio/misi 2/pembaris.ogg"></audio>
+    <audio id="vo-kerusi" src="assets/audio/misi 2/kerusi.ogg"></audio>
+    <audio id="vo-meja" src="assets/audio/misi 2/meja.ogg"></audio>
+    <audio id="vo-tahniah" src="assets/audio/misi 2/tahniah.ogg"></audio>
 
     <div class="learning-popup-overlay" id="victory-popup">
         <div class="learning-popup">
@@ -331,7 +338,7 @@
             <p style="font-size: 1.5rem;">Kamu sudah menguasai kemahiran membezakan saiz di Makmal Saiz! 🧪🔍🏆</p>
             <div style="font-size: 4rem; margin: 20px 0;">📏📏</div>
             <p style="font-size: 1.2rem; font-family: 'Open Sans', sans-serif;">Ingat! Saiz membantu kita mengenali benda di sekeliling kita dengan lebih tepat.</p>
-            <button class="btn-continue" onclick="window.location.href='index.html'">Selesai! ✨</button>
+            <button class="btn-continue" onclick="window.location.href='next.html'">Selesai! ✨</button>
         </div>
     </div>
 
@@ -339,30 +346,34 @@
         const questions = [
             {
                 text: "Antara Buku Teks dan Buku Nota, mana yang lebih BESAR?",
+                audioId: "vo-buku",
                 options: [
-                    { content: "textbook.webp", label: "Buku Teks", size: "large", type: "img", correct: true },
-                    { content: "buku nota.png", label: "Buku Nota", size: "small", type: "img", correct: false }
+                    { content: "assets/images/textbook.webp", label: "Buku Teks", size: "large", type: "img", correct: true },
+                    { content: "assets/images/buku nota.png", label: "Buku Nota", size: "small", type: "img", correct: false }
                 ]
             },
             {
                 text: "Antara dua pembaris ini, mana yang lebih KECIL / PENDEK?",
+                audioId: "vo-pembaris",
                 options: [
-                    { content: "pembaris plastik.png", label: "Pembaris Plastik", size: "large", type: "img", correct: false },
-                    { content: "pembaris kayu.png", label: "Pembaris Kayu", size: "small", type: "img", correct: true }
+                    { content: "assets/images/pembaris plastik.png", label: "Pembaris Plastik", size: "large", type: "img", correct: true },
+                    { content: "assets/images/pembaris kayu.png", label: "Pembaris Kayu", size: "small", type: "img", correct: false }
                 ]
             },
             {
                 text: "Antara dua kerusi ini, mana yang lebih BESAR?",
+                audioId: "vo-kerusi",
                 options: [
-                    { content: "kerusi kayu.png", label: "Kerusi Kayu", size: "medium", type: "img", correct: true },
-                    { content: "kerusi plastik.png", label: "Kerusi Plastik", size: "small", type: "img", correct: false }
+                    { content: "assets/images/kerusi kayu.png", label: "Kerusi Kayu", size: "medium", type: "img", correct: true },
+                    { content: "assets/images/kerusi plastik.png", label: "Kerusi Plastik", size: "small", type: "img", correct: false }
                 ]
             },
             {
                 text: "Antara dua meja ini, mana yang lebih LUAS / BESAR?",
+                audioId: "vo-meja",
                 options: [
-                    { content: "meja kayu.png", label: "Meja Kayu", size: "medium", type: "img", correct: true },
-                    { content: "meja plastik.png", label: "Meja Lipat", size: "small", type: "img", correct: false }
+                    { content: "assets/images/meja kayu.png", label: "Meja Kayu", size: "medium", type: "img", correct: true },
+                    { content: "assets/images/meja plastik.png", label: "Meja Lipat", size: "small", type: "img", correct: false }
                 ]
             }
         ];
@@ -410,6 +421,12 @@
             dots.forEach((dot, index) => {
                 dot.className = 'progress-dot' + (index < currentQuestion ? ' completed' : (index === currentQuestion ? ' active' : ''));
             });
+
+            // Play Question Audio
+            if (q.audioId) {
+                const audio = document.getElementById(q.audioId);
+                audio.play().catch(() => {});
+            }
         }
 
         function checkAnswer(index) {
@@ -451,6 +468,13 @@
 
         function winGame() {
             soundYay.play();
+            const voTahniah = document.getElementById('vo-tahniah');
+            
+            // Play Tahniah voice-over ONLY after the initial "Yay" sound effect ends
+            soundYay.onended = () => {
+                voTahniah.play().catch(() => {});
+            };
+            
             dots[3].className = 'progress-dot completed';
             setTimeout(() => {
                 document.getElementById('victory-popup').style.display = 'flex';
@@ -469,6 +493,34 @@
         document.head.appendChild(style);
 
         window.onload = updateQuestion;
+    </script>
+    <!-- Background Music -->
+    <audio id="bg-music" loop src="assets/audio/bckgrnd music.mp3"></audio>
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+        bgMusic.volume = 0.3;
+        const savedTime = localStorage.getItem('bgMusicTime');
+        if (savedTime) bgMusic.currentTime = parseFloat(savedTime);
+        const playMusic = () => {
+            bgMusic.play().catch(() => {
+                document.addEventListener('click', () => bgMusic.play(), { once: true });
+            });
+        };
+        playMusic();
+        setInterval(() => { localStorage.setItem('bgMusicTime', bgMusic.currentTime); }, 1000);
+
+        // Hover sound for all interactive elements
+        const hoverSound = document.createElement('audio');
+        hoverSound.id = 'hover-sound';
+        hoverSound.src = 'assets/audio/catch correct.mp3';
+        document.body.appendChild(hoverSound);
+
+        document.querySelectorAll('button, a, .mission-card, .option-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                hoverSound.currentTime = 0;
+                hoverSound.play().catch(() => {});
+            });
+        });
     </script>
 </body>
 

@@ -19,7 +19,7 @@
             padding: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('page 2 enhance.jpg');
+            background-image: url('assets/images/page 2 enhance.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -27,7 +27,7 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding-top: 50px; /* Lowered a bit as requested */
+            padding-top: 110px; /* Moved down further for better balance */
             gap: 20px;
             font-family: 'Fredoka', sans-serif;
             overflow: hidden;
@@ -69,34 +69,34 @@
         }
 
         .circle-icon {
-            width: 80px;
-            height: 80px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            border: 5px solid var(--outline-color);
+            border: 6px solid var(--outline-color);
             background: var(--white, #fff);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 35px;
+            font-size: 50px;
             position: relative;
             z-index: 2;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
         }
 
         .banner-wrap {
-            margin-left: -30px;
+            margin-left: -40px;
             display: flex;
             flex-direction: column;
-            width: 280px;
+            width: 380px;
             z-index: 1;
-            filter: drop-shadow(0 6px 0 rgba(0,0,0,0.1));
+            filter: drop-shadow(0 8px 0 rgba(0,0,0,0.1));
         }
 
         .banner-top {
             background: var(--btn-color, var(--misi1-color));
-            border: 5px solid var(--outline-color);
-            border-radius: 0 35px 35px 0;
-            padding: 10px 20px 10px 45px;
+            border: 6px solid var(--outline-color);
+            border-radius: 0 45px 45px 0;
+            padding: 15px 25px 15px 60px;
             color: white;
             position: relative;
         }
@@ -114,7 +114,7 @@
 
         .banner-top h2 {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1.6rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             line-height: 1.1;
@@ -122,18 +122,18 @@
 
         .banner-bottom {
             background: white;
-            border: 5px solid var(--outline-color);
+            border: 6px solid var(--outline-color);
             border-top: none;
-            border-radius: 0 0 30px 0;
-            padding: 5px 20px 5px 45px;
-            margin-top: -5px;
-            margin-right: 20px;
+            border-radius: 0 0 40px 0;
+            padding: 8px 25px 8px 60px;
+            margin-top: -6px;
+            margin-right: 25px;
             text-align: left;
         }
 
         .banner-bottom p {
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--outline-color);
         }
@@ -232,17 +232,46 @@
         </a>
 
         <!-- Mission 3 -->
-        <a href="#" class="mission-button" style="--btn-color: var(--misi3-color);">
-            <div class="circle-icon">🎲</div>
+        <a href="master-detektif.html" class="mission-button" style="--btn-color: var(--misi3-color);">
+            <div class="circle-icon">🏆</div>
             <div class="banner-wrap">
                 <div class="banner-top">
-                    <h2>MISI 3:<br>MAIN TEKA</h2>
+                    <h2>MISI 3:<br>MASTER DETEKTIF</h2>
                 </div>
                 <div class="banner-bottom">
-                    <p>Teka Nama Bentuk!</p>
+                    <p>Bentuk & Saiz!</p>
                 </div>
             </div>
         </a>
     </div>
+
+    <!-- Background Music -->
+    <audio id="bg-music" loop src="assets/audio/bckgrnd music.mp3"></audio>
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+        bgMusic.volume = 0.3;
+        const savedTime = localStorage.getItem('bgMusicTime');
+        if (savedTime) bgMusic.currentTime = parseFloat(savedTime);
+        const playMusic = () => {
+            bgMusic.play().catch(() => {
+                document.addEventListener('click', () => bgMusic.play(), { once: true });
+            });
+        };
+        playMusic();
+        setInterval(() => { localStorage.setItem('bgMusicTime', bgMusic.currentTime); }, 1000);
+
+        // Hover sound for all interactive elements
+        const hoverSound = document.createElement('audio');
+        hoverSound.id = 'hover-sound';
+        hoverSound.src = 'assets/audio/catch correct.mp3';
+        document.body.appendChild(hoverSound);
+
+        document.querySelectorAll('button, a, .mission-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                hoverSound.currentTime = 0;
+                hoverSound.play().catch(() => {});
+            });
+        });
+    </script>
 </body>
 </html>

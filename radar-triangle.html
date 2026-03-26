@@ -7,14 +7,16 @@
     <title>Shape Eby - Misi Radar Segi Tiga! 📡</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Coiny&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Coiny&display=swap"
+        rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('page 4.png');
+            background-image: url('assets/images/page 4.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -57,7 +59,8 @@
             padding: 10px 20px;
             border-radius: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            color: #FF9800; /* Orange for Triangle Mission */
+            color: #FF9800;
+            /* Orange for Triangle Mission */
             font-size: 1.5rem;
             z-index: 15;
             border: 3px solid #FF9800;
@@ -101,9 +104,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 
-                0 10px 0 rgba(0,0,0,0.1),
-                inset 0 0 10px rgba(0,0,0,0.05);
+            box-shadow:
+                0 10px 0 rgba(0, 0, 0, 0.1),
+                inset 0 0 10px rgba(0, 0, 0, 0.05);
             position: relative;
         }
 
@@ -112,7 +115,7 @@
             position: absolute;
             width: 100%;
             height: 20px;
-            background: rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
             bottom: -25px;
             border-radius: 10px;
             filter: blur(8px);
@@ -126,7 +129,7 @@
             user-select: none;
             touch-action: none;
             pointer-events: auto;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 100;
         }
@@ -155,7 +158,7 @@
             width: 80%;
             max-width: 600px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
             animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             font-family: 'Open Sans', 'Fredoka', sans-serif;
@@ -222,13 +225,30 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes popUp {
-            from { transform: scale(0.5) translateY(100px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
+            from {
+                transform: scale(0.5) translateY(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .btn-start:active {
+            transform: translateY(3px);
+            box-shadow: 0 5px 0 #E65100;
         }
 
         .shelf-wrapper {
@@ -259,7 +279,7 @@
             height: 35px;
             background: transparent;
             transform: rotateX(-25deg);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
             z-index: -1;
         }
 
@@ -358,33 +378,43 @@
     <div class="shape-container" id="game-space">
         <div class="middle-slots">
             <div class="item-slot">
-                <div class="shape" data-shape="triangle" style="--color: #FF5252;" onpointerdown="startDrag(event)">🍰</div>
+                <div class="shape" data-shape="triangle" style="--color: #FF5252;" onpointerdown="startDrag(event)">🍰
+                </div>
             </div>
             <div class="item-slot">
-                <div class="shape" data-shape="other" style="--color: #FFEB3B;" onpointerdown="startDrag(event)">📖</div>
+                <div class="shape" data-shape="other" style="--color: #FFEB3B;" onpointerdown="startDrag(event)">📘
+                </div>
             </div>
             <div class="item-slot">
-                <div class="shape" data-shape="triangle" style="--color: #4CAF50;" onpointerdown="startDrag(event)">🚩</div>
+                <div class="shape" data-shape="triangle" style="--color: #4CAF50;" onpointerdown="startDrag(event)">🚩
+                </div>
             </div>
             <div class="item-slot">
-                <div class="shape" data-shape="other" style="--color: #2196F3;" onpointerdown="startDrag(event)">📄</div>
+                <div class="shape" data-shape="other" style="--color: #2196F3;" onpointerdown="startDrag(event)">📄
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Audio Feedback -->
-    <audio id="sound-correct" src="catch correct.mp3"></audio>
-    <audio id="sound-wrong" src="wrong catch.mp3"></audio>
+    <audio id="sound-correct" src="assets/audio/catch correct.mp3"></audio>
+    <audio id="sound-wrong" src="assets/audio/wrong catch.mp3"></audio>
+
+    <!-- Voice Over -->
+    <audio id="vo-finish" src="assets/audio/misi 1/popup segi tiga.ogg"></audio>
+    <audio id="vo-start" src="assets/audio/misi 1/masukkan segi tiga.ogg"></audio>
 
     <div class="shelf-wrapper">
         <div class="shelf">
             <div class="cases">
-                <div class="case" style="width: 100%; display: flex; justify-content: center; transform: translateX(-250px);">
+                <div class="case"
+                    style="width: 100%; display: flex; justify-content: center; transform: translateX(-250px);">
                     <div class="box-wrapper" id="box-container">
                         <svg id="box-svg" viewBox="190 90 120 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
                             <g id="OBJECTS">
                                 <g>
-                                    <ellipse style="fill:rgba(0,0,0,0.1);" cx="250" cy="174.934" rx="56.059" ry="5.192" />
+                                    <ellipse style="fill:rgba(0,0,0,0.1);" cx="250" cy="174.934" rx="56.059"
+                                        ry="5.192" />
                                     <g>
                                         <polygon style="fill:#C47212;"
                                             points="230.955,103.212 296.266,107.195 296.266,174.486 230.955,170.504" />
@@ -445,14 +475,21 @@
         const box = document.getElementById('box-container');
         const soundCorrect = document.getElementById('sound-correct');
         const soundWrong = document.getElementById('sound-wrong');
+        const voFinish = document.getElementById('vo-finish');
+        const voStart = document.getElementById('vo-start');
+
+        window.addEventListener('load', () => {
+             // Play instruction VO on load
+             voStart.play().catch(() => {});
+        });
 
         function startDrag(e) {
             dragItem = e.target;
             originalParent = dragItem.parentElement;
             originalRect = dragItem.getBoundingClientRect();
-            
+
             document.body.appendChild(dragItem);
-            
+
             offsetX = e.clientX - originalRect.left;
             offsetY = e.clientY - originalRect.top;
 
@@ -525,7 +562,7 @@
 
         function snapBack() {
             if (!dragItem) return;
-            
+
             dragItem.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
             dragItem.style.left = originalRect.left + 'px';
             dragItem.style.top = originalRect.top + 'px';
@@ -536,7 +573,7 @@
                 dragItem.style.left = '';
                 dragItem.style.top = '';
                 originalParent.appendChild(dragItem);
-                
+
                 dragItem.onpointermove = null;
                 dragItem.onpointerup = null;
                 dragItem = null;
@@ -550,6 +587,7 @@
                 document.querySelector('.instruction-tag').innerHTML = "Hebat! Kamu sudah jumpa semua bentuk segi tiga! ⭐⭐⭐";
                 setTimeout(() => {
                     document.getElementById('learning-popup').style.display = 'flex';
+                    voFinish.play();
                 }, 1000);
             }
         }
@@ -557,6 +595,34 @@
         function closePopup() {
             window.location.href = "radar-rectangle.html";
         }
+    </script>
+    <!-- Background Music -->
+    <audio id="bg-music" loop src="assets/audio/bckgrnd music.mp3"></audio>
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+        bgMusic.volume = 0.3;
+        const savedTime = localStorage.getItem('bgMusicTime');
+        if (savedTime) bgMusic.currentTime = parseFloat(savedTime);
+        const playMusic = () => {
+            bgMusic.play().catch(() => {
+                document.addEventListener('click', () => bgMusic.play(), { once: true });
+            });
+        };
+        playMusic();
+        setInterval(() => { localStorage.setItem('bgMusicTime', bgMusic.currentTime); }, 1000);
+
+        // Hover sound for all interactive elements
+        const hoverSound = document.createElement('audio');
+        hoverSound.id = 'hover-sound';
+        hoverSound.src = 'assets/audio/catch correct.mp3';
+        document.body.appendChild(hoverSound);
+
+        document.querySelectorAll('button, a, .mission-card, .shape').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                hoverSound.currentTime = 0;
+                hoverSound.play().catch(() => {});
+            });
+        });
     </script>
 </body>
 

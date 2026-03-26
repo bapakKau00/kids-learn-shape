@@ -14,7 +14,7 @@
             padding: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('page 4.png');
+            background-image: url('assets/images/page 4.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -168,12 +168,12 @@
             </div>
         </div>
 
-        <a href="makmal-saiz.html" class="btn-replay" style="background: #9C27B0; box-shadow: 0 10px 0 #7B1FA2; margin-bottom: 20px;">Tahap 2: Makmal Saiz! 🧪🔍</a>
-        <a href="radar.html" class="btn-replay">Main Semula 🔄</a>
+        <a href="next.html" class="btn-replay" style="background: #9C27B0; box-shadow: 0 10px 0 #7B1FA2; margin-bottom: 20px;">Menu Utama ✨</a>
+
     </div>
 
     <!-- Celebration Audio -->
-    <audio id="sound-yay" src="yayyy-sound.mp3" autoplay></audio>
+    <audio id="yay-sound" src="assets/audio/yayyy-sound.mp3"></audio>
 
     <!-- Generate Confetti -->
     <script>
@@ -194,6 +194,34 @@
             confetti.style.opacity = Math.random();
             document.body.appendChild(confetti);
         }
+    </script>
+    <!-- Background Music -->
+    <audio id="bg-music" loop src="assets/audio/bckgrnd music.mp3"></audio>
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+        bgMusic.volume = 0.3;
+        const savedTime = localStorage.getItem('bgMusicTime');
+        if (savedTime) bgMusic.currentTime = parseFloat(savedTime);
+        const playMusic = () => {
+            bgMusic.play().catch(() => {
+                document.addEventListener('click', () => bgMusic.play(), { once: true });
+            });
+        };
+        playMusic();
+        setInterval(() => { localStorage.setItem('bgMusicTime', bgMusic.currentTime); }, 1000);
+
+        // Hover sound for all interactive elements
+        const hoverSound = document.createElement('audio');
+        hoverSound.id = 'hover-sound';
+        hoverSound.src = 'assets/audio/catch correct.mp3';
+        document.body.appendChild(hoverSound);
+
+        document.querySelectorAll('button, a, .shape-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                hoverSound.currentTime = 0;
+                hoverSound.play().catch(() => {});
+            });
+        });
     </script>
 </body>
 

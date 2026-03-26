@@ -1,0 +1,18 @@
+# Local development files
+.DS_Store
+Thumbs.db
+*.log
+
+# Git / IDE settings
+.vscode/
+.idea/
+.gemini/
+.agents/
+.agent/
+_agents/
+_agent/
+
+# Temporary / Artifacts
+tmp/
+brain/
+*.tmp

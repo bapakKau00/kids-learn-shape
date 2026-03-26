@@ -102,7 +102,7 @@
 
 <body>
     <video autoplay muted playsinline id="bg-video">
-        <source src="page 3 vid.mp4" type="video/mp4">
+        <source src="assets/videos/page 3 vid.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
     <a href="next.html" class="back-button">Menu Utama</a>
@@ -115,8 +115,45 @@
         </a>
     </div>
 
+    <audio id="vo-title" src="assets/audio/misi 1/radar bentuk.ogg"></audio>
+
+    <audio id="bg-music" loop src="assets/audio/bckgrnd music.mp3"></audio>
     <script>
         const video = document.getElementById('bg-video');
+        const voTitle = document.getElementById('vo-title');
+        const bgMusic = document.getElementById('bg-music');
+        bgMusic.volume = 0.3;
+
+        const savedTime = localStorage.getItem('bgMusicTime');
+        if (savedTime) bgMusic.currentTime = parseFloat(savedTime);
+
+        const playMusic = () => {
+            bgMusic.play().catch(() => {
+                document.addEventListener('click', () => bgMusic.play(), { once: true });
+            });
+        };
+        playMusic();
+        setInterval(() => { localStorage.setItem('bgMusicTime', bgMusic.currentTime); }, 1000);
+
+        // Hover sound for all interactive elements
+        const hoverSound = document.createElement('audio');
+        hoverSound.id = 'hover-sound';
+        hoverSound.src = 'assets/audio/catch correct.mp3';
+        document.body.appendChild(hoverSound);
+
+        document.querySelectorAll('button, a, .mission-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                hoverSound.currentTime = 0;
+                hoverSound.play().catch(() => {});
+            });
+        });
+
+        // Play title audio on load
+        window.addEventListener('load', () => {
+            voTitle.play().catch(error => {
+                console.log("Autoplay prevented. Audio will play on first interaction.");
+            });
+        });
 
         // Smoothly fade in when metadata is ready
         video.addEventListener('loadedmetadata', () => {

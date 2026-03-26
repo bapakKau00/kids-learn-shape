@@ -4,16 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shape Eby - Home 🎈</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="video-container">
         <video autoplay muted loop playsinline id="bg-video">
-            <source src="vmake.mp4">
+            <source src="assets/videos/vmake.mp4">
             Your browser does not support the video tag.
         </video>
     </div>
     <!-- This is the clickable area that sits over the video button -->
     <a href="next.html" id="video-button-link" title="Go to Next Page"></a>
+
+    <!-- Intro Audio -->
+    <audio id="index-audio" src="assets/audio/index audio.ogg"></audio>
+
+    <!-- Background Music -->
+    <audio id="bg-music" loop src="assets/audio/bckgrnd music.mp3"></audio>
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+        const indexAudio = document.getElementById('index-audio');
+        
+        bgMusic.volume = 0.3;
+        
+        const savedTime = localStorage.getItem('bgMusicTime');
+        if (savedTime) bgMusic.currentTime = parseFloat(savedTime);
+        
+        const playWelcome = () => {
+            // Play index audio first
+            indexAudio.play().catch(() => {});
+            // Play background music
+            bgMusic.play().catch(() => {
+                // If blocked, wait for first click to play both
+                const startAll = () => {
+                    indexAudio.play();
+                    bgMusic.play();
+                };
+                document.addEventListener('click', startAll, { once: true });
+            });
+        };
+
+        window.addEventListener('load', playWelcome);
+
+        setInterval(() => { localStorage.setItem('bgMusicTime', bgMusic.currentTime); }, 1000);
+
+        // Hover sound for all interactive elements
+        const hoverSound = document.createElement('audio');
+        hoverSound.id = 'hover-sound';
+        hoverSound.src = 'assets/audio/catch correct.mp3';
+        document.body.appendChild(hoverSound);
+
+        document.querySelectorAll('button, a, .mission-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                hoverSound.currentTime = 0;
+                hoverSound.play().catch(() => {});
+            });
+        });
+    </script>
 </body>
 </html>
