@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape Eby - Makmal Saiz! 🧪🔍</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Coiny&family=Open+Sans:wght@300..800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('page 4.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Fredoka', sans-serif;
+            color: white;
+        }
+
+        .overlay-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: #ff4081;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s;
+            z-index: 20;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .instruction-tag {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 40px;
+            border-radius: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            color: #9C27B0;
+            font-size: 2rem;
+            border: 4px solid #9C27B0;
+            text-align: center;
+            animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .progress-container {
+            position: absolute;
+            top: 130px;
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .progress-dot {
+            width: 25px;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            border: 3px solid white;
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background: #FFEB3B;
+            transform: scale(1.3);
+            box-shadow: 0 0 15px #FFEB3B;
+        }
+
+        .progress-dot.completed {
+            background: #4CAF50;
+        }
+
+        .game-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            width: 80%;
+            max-width: 1000px;
+            height: 60%;
+            margin-top: 50px;
+            z-index: 5;
+        }
+
+        .option-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .option-container:hover {
+            transform: scale(1.05);
+        }
+
+        .option-container:active {
+            transform: scale(0.95);
+        }
+
+        .pedestal {
+            width: 300px;
+            height: 60px;
+            background: #ffffff;
+            border-radius: 50% / 20%;
+            border-bottom: 20px solid #cfd8dc;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .item {
+            font-size: 150px;
+            margin-bottom: -40px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+            transition: all 0.5s ease;
+            z-index: 2;
+        }
+
+        .item.small {
+            transform: scale(0.6);
+        }
+
+        .item.large {
+            transform: scale(1.2);
+        }
+
+        .label-tag {
+            background: #333;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Learning Popup */
+        .learning-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .learning-popup {
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            border: 10px solid #9C27B0;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #333;
+        }
+
+        .learning-popup h2 {
+            color: #9C27B0;
+            font-size: 3.5rem;
+            margin: 0 0 20px 0;
+            font-family: 'Coiny', cursive;
+        }
+
+        .btn-continue {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 30px;
+            font-size: 2rem;
+            font-family: 'Coiny', cursive;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #2E7D32;
+            margin-top: 30px;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.5) translateY(100px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .feedback-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10rem;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .feedback-overlay.show {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay-bg"></div>
+    <a href="final-celebration.html" class="back-button">Kembali</a>
+
+    <div class="header">
+        <div class="instruction-tag" id="question-text">Pilih item yang BESAR!</div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-dot active"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+    </div>
+
+    <div class="game-area">
+        <div class="option-container" id="option-1" onclick="checkAnswer(0)">
+            <div class="item" id="item-1">📚</div>
+            <div class="pedestal"></div>
+            <div class="label-tag" id="label-1">Buku Teks</div>
+        </div>
+        <div class="option-container" id="option-2" onclick="checkAnswer(1)">
+            <div class="item" id="item-2">📔</div>
+            <div class="pedestal"></div>
+            <div class="label-tag" id="label-2">Buku Nota</div>
+        </div>
+    </div>
+
+    <div class="feedback-overlay" id="feedback-overlay">✅</div>
+
+    <!-- Audio Feedback -->
+    <audio id="sound-correct" src="catch correct.mp3"></audio>
+    <audio id="sound-wrong" src="wrong catch.mp3"></audio>
+    <audio id="sound-yay" src="yayyy-sound.mp3"></audio>
+
+    <div class="learning-popup-overlay" id="victory-popup">
+        <div class="learning-popup">
+            <h2>TAHNIAH!</h2>
+            <p style="font-size: 1.5rem;">Kamu sudah menguasai kemahiran membezakan saiz di Makmal Saiz! 🧪🔍🏆</p>
+            <div style="font-size: 4rem; margin: 20px 0;">📏📏</div>
+            <p style="font-size: 1.2rem; font-family: 'Open Sans', sans-serif;">Ingat! Saiz membantu kita mengenali benda di sekeliling kita dengan lebih tepat.</p>
+            <button class="btn-continue" onclick="window.location.href='index.html'">Selesai! ✨</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                text: "Antara Buku Teks dan Buku Nota, mana yang lebih BESAR?",
+                options: [
+                    { emoji: "📚", label: "Buku Teks", size: "large", correct: true },
+                    { emoji: "📔", label: "Buku Nota", size: "small", correct: false }
+                ]
+            },
+            {
+                text: "Antara dua pembaris ini, mana yang lebih KECIL?",
+                options: [
+                    { emoji: "📏", label: "Pembaris Plastik", size: "large", correct: false },
+                    { emoji: "📏", label: "Pembaris Besi", size: "small", correct: true }
+                ]
+            },
+            {
+                text: "Antara dua kerusi ini, mana yang lebih BESAR?",
+                options: [
+                    { emoji: "🪑", label: "Kerusi Kayu", size: "large", correct: true },
+                    { emoji: "🪑", label: "Kerusi Plastik", size: "small", correct: false }
+                ]
+            },
+            {
+                text: "Antara dua meja ini, mana yang lebih LUAS / BESAR?",
+                options: [
+                    { emoji: "🗄️", label: "Meja Kayu", size: "large", correct: true },
+                    { emoji: "🗄️", label: "Meja Lipat", size: "small", correct: false }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let canClick = true;
+
+        const soundCorrect = document.getElementById('sound-correct');
+        const soundWrong = document.getElementById('sound-wrong');
+        const soundYay = document.getElementById('sound-yay');
+        const feedback = document.getElementById('feedback-overlay');
+        const dots = document.querySelectorAll('.progress-dot');
+
+        function updateQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question-text').innerHTML = q.text;
+            
+            // Randomize left/right
+            const isSwapped = Math.random() > 0.5;
+            const opt1 = isSwapped ? q.options[1] : q.options[0];
+            const opt2 = isSwapped ? q.options[0] : q.options[1];
+
+            document.getElementById('item-1').innerHTML = opt1.emoji;
+            document.getElementById('item-1').className = 'item ' + opt1.size;
+            document.getElementById('label-1').innerHTML = opt1.label;
+            document.getElementById('option-1').setAttribute('onclick', `checkAnswer(${isSwapped ? 1 : 0})`);
+
+            document.getElementById('item-2').innerHTML = opt2.emoji;
+            document.getElementById('item-2').className = 'item ' + opt2.size;
+            document.getElementById('label-2').innerHTML = opt2.label;
+            document.getElementById('option-2').setAttribute('onclick', `checkAnswer(${isSwapped ? 0 : 1})`);
+            
+            dots.forEach((dot, index) => {
+                dot.className = 'progress-dot' + (index < currentQuestion ? ' completed' : (index === currentQuestion ? ' active' : ''));
+            });
+        }
+
+        function checkAnswer(index) {
+            if (!canClick) return;
+            canClick = false;
+
+            const isCorrect = questions[currentQuestion].options[index].correct;
+
+            if (isCorrect) {
+                soundCorrect.play();
+                feedback.innerHTML = "✅";
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                    currentQuestion++;
+                    if (currentQuestion < questions.length) {
+                        updateQuestion();
+                        canClick = true;
+                    } else {
+                        winGame();
+                    }
+                }, 1000);
+            } else {
+                soundWrong.play();
+                feedback.innerHTML = "❌";
+                feedback.classList.add('show');
+                
+                const container = index === 0 ? document.getElementById('option-1') : document.getElementById('option-2');
+                container.style.animation = 'shake 0.5s';
+                
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                    container.style.animation = '';
+                    canClick = true;
+                }, 1000);
+            }
+        }
+
+        function winGame() {
+            soundYay.play();
+            dots[3].className = 'progress-dot completed';
+            setTimeout(() => {
+                document.getElementById('victory-popup').style.display = 'flex';
+            }, 500);
+        }
+
+        // Add shake animation dynamic
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        window.onload = updateQuestion;
+    </script>
+</body>
+
+</html>
