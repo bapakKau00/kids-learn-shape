@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape Eby - Tahniah! 🥳🚀✨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Coiny&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('page 4.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Fredoka', sans-serif;
+            text-align: center;
+            color: white;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.4);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        h1 {
+            font-family: 'Coiny', cursive;
+            font-size: 5rem;
+            margin: 0;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            color: #FFEB3B;
+            -webkit-text-stroke: 3px #D77D14;
+        }
+
+        .subtitle {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        }
+
+        .shapes-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .shape-card {
+            background: white;
+            padding: 20px;
+            border-radius: 30px;
+            border: 8px solid #FF4081;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transform: rotate(var(--rot));
+            transition: transform 0.3s;
+        }
+
+        .shape-card:hover {
+            transform: scale(1.1) rotate(0deg);
+        }
+
+        .shape-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+
+        .shape-name {
+            color: #333;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .btn-replay {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 20px 60px;
+            border-radius: 50px;
+            font-size: 2rem;
+            font-family: 'Coiny', cursive;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 0 #2E7D32;
+            text-decoration: none;
+        }
+
+        .btn-replay:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 0 #2E7D32;
+        }
+
+        .btn-replay:active {
+            transform: translateY(3px);
+            box-shadow: 0 5px 0 #2E7D32;
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: gold;
+            top: -20px;
+            z-index: 5;
+            animation: fall var(--dur) linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay"></div>
+
+    <div class="content">
+        <h1>TAHNIAH!</h1>
+        <p class="subtitle">Kamu sudah menjadi Pakar Bentuk! 🏆✨</p>
+
+        <div class="shapes-grid">
+            <div class="shape-card" style="--rot: -5deg; border-color: #4CAF50;">
+                <div class="shape-icon">⚽</div>
+                <div class="shape-name">Bulat</div>
+            </div>
+            <div class="shape-card" style="--rot: 3deg; border-color: #2196F3;">
+                <div class="shape-icon">📦</div>
+                <div class="shape-name">Segi Empat Sama</div>
+            </div>
+            <div class="shape-card" style="--rot: -2deg; border-color: #FF9800;">
+                <div class="shape-icon">🍕</div>
+                <div class="shape-name">Segi Tiga</div>
+            </div>
+            <div class="shape-card" style="--rot: 4deg; border-color: #9C27B0;">
+                <div class="shape-icon">📘</div>
+                <div class="shape-name">Segi Empat Tepat</div>
+            </div>
+        </div>
+
+        <a href="radar.html" class="btn-replay">Main Semula 🔄</a>
+    </div>
+
+    <!-- Celebration Audio -->
+    <audio id="sound-yay" src="yayyy-sound.mp3" autoplay></audio>
+
+    <!-- Generate Confetti -->
+    <script>
+        window.addEventListener('load', () => {
+            const sound = document.getElementById('sound-yay');
+            sound.play().catch(() => {
+                // Ignore auto-play block, it might play if they navigated from missions
+            });
+        });
+
+        const colors = ['#FF4081', '#FFEB3B', '#4CAF50', '#2196F3', '#9C27B0'];
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.setProperty('--dur', (3 + Math.random() * 5) + 's');
+            confetti.style.opacity = Math.random();
+            document.body.appendChild(confetti);
+        }
+    </script>
+</body>
+
+</html>
