@@ -136,7 +136,7 @@
         }
 
         .pedestal {
-            width: 300px;
+            width: 320px;
             height: 60px;
             background: #ffffff;
             border-radius: 50% / 20%;
@@ -148,20 +148,47 @@
             position: relative;
         }
 
+        .item-box {
+            width: 250px;
+            height: 250px;
+            background: #ffffff;
+            border: 8px solid #D77D14;
+            border-radius: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            bottom: 40px;
+            box-shadow: 0 10px 0 #cfd8dc;
+            transition: transform 0.3s;
+        }
+
         .item {
-            font-size: 150px;
-            margin-bottom: -40px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+            font-size: 180px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
             transition: all 0.5s ease;
             z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .item img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
         }
 
         .item.small {
-            transform: scale(0.6);
+            transform: scale(0.65);
+        }
+
+        .item.medium {
+            transform: scale(0.9);
         }
 
         .item.large {
-            transform: scale(1.2);
+            transform: scale(1.15);
         }
 
         .label-tag {
@@ -274,13 +301,19 @@
 
     <div class="game-area">
         <div class="option-container" id="option-1" onclick="checkAnswer(0)">
-            <div class="item" id="item-1">📚</div>
-            <div class="pedestal"></div>
+            <div class="pedestal">
+                <div class="item-box">
+                    <div class="item" id="item-1">📚</div>
+                </div>
+            </div>
             <div class="label-tag" id="label-1">Buku Teks</div>
         </div>
         <div class="option-container" id="option-2" onclick="checkAnswer(1)">
-            <div class="item" id="item-2">📔</div>
-            <div class="pedestal"></div>
+            <div class="pedestal">
+                <div class="item-box">
+                    <div class="item" id="item-2">📔</div>
+                </div>
+            </div>
             <div class="label-tag" id="label-2">Buku Nota</div>
         </div>
     </div>
@@ -307,29 +340,29 @@
             {
                 text: "Antara Buku Teks dan Buku Nota, mana yang lebih BESAR?",
                 options: [
-                    { emoji: "📚", label: "Buku Teks", size: "large", correct: true },
-                    { emoji: "📔", label: "Buku Nota", size: "small", correct: false }
+                    { content: "textbook.webp", label: "Buku Teks", size: "large", type: "img", correct: true },
+                    { content: "buku nota.png", label: "Buku Nota", size: "small", type: "img", correct: false }
                 ]
             },
             {
-                text: "Antara dua pembaris ini, mana yang lebih KECIL?",
+                text: "Antara dua pembaris ini, mana yang lebih KECIL / PENDEK?",
                 options: [
-                    { emoji: "📏", label: "Pembaris Plastik", size: "large", correct: false },
-                    { emoji: "📏", label: "Pembaris Besi", size: "small", correct: true }
+                    { content: "pembaris plastik.png", label: "Pembaris Plastik", size: "large", type: "img", correct: false },
+                    { content: "pembaris kayu.png", label: "Pembaris Kayu", size: "small", type: "img", correct: true }
                 ]
             },
             {
                 text: "Antara dua kerusi ini, mana yang lebih BESAR?",
                 options: [
-                    { emoji: "🪑", label: "Kerusi Kayu", size: "large", correct: true },
-                    { emoji: "🪑", label: "Kerusi Plastik", size: "small", correct: false }
+                    { content: "kerusi kayu.png", label: "Kerusi Kayu", size: "medium", type: "img", correct: true },
+                    { content: "kerusi plastik.png", label: "Kerusi Plastik", size: "small", type: "img", correct: false }
                 ]
             },
             {
                 text: "Antara dua meja ini, mana yang lebih LUAS / BESAR?",
                 options: [
-                    { emoji: "🗄️", label: "Meja Kayu", size: "large", correct: true },
-                    { emoji: "🗄️", label: "Meja Lipat", size: "small", correct: false }
+                    { content: "meja kayu.png", label: "Meja Kayu", size: "medium", type: "img", correct: true },
+                    { content: "meja plastik.png", label: "Meja Lipat", size: "small", type: "img", correct: false }
                 ]
             }
         ];
@@ -352,13 +385,25 @@
             const opt1 = isSwapped ? q.options[1] : q.options[0];
             const opt2 = isSwapped ? q.options[0] : q.options[1];
 
-            document.getElementById('item-1').innerHTML = opt1.emoji;
-            document.getElementById('item-1').className = 'item ' + opt1.size;
+            // Render Option 1
+            const item1 = document.getElementById('item-1');
+            if (opt1.type === "img") {
+                item1.innerHTML = `<img src="${opt1.content}">`;
+            } else {
+                item1.innerHTML = opt1.emoji;
+            }
+            item1.className = 'item ' + opt1.size;
             document.getElementById('label-1').innerHTML = opt1.label;
             document.getElementById('option-1').setAttribute('onclick', `checkAnswer(${isSwapped ? 1 : 0})`);
 
-            document.getElementById('item-2').innerHTML = opt2.emoji;
-            document.getElementById('item-2').className = 'item ' + opt2.size;
+            // Render Option 2
+            const item2 = document.getElementById('item-2');
+            if (opt2.type === "img") {
+                item2.innerHTML = `<img src="${opt2.content}">`;
+            } else {
+                item2.innerHTML = opt2.emoji;
+            }
+            item2.className = 'item ' + opt2.size;
             document.getElementById('label-2').innerHTML = opt2.label;
             document.getElementById('option-2').setAttribute('onclick', `checkAnswer(${isSwapped ? 0 : 1})`);
             
