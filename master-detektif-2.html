@@ -540,7 +540,7 @@
             // Save for overall average
             sessionStorage.setItem('eby_master_time_l2', elapsedMilliseconds);
 
-            saveScore(finalTimeStr, elapsedMilliseconds);
+            saveScore(finalTimeStr, elapsedMilliseconds / 1000);
             displayLeaderboard();
 
             setTimeout(() => {

@@ -600,6 +600,15 @@
             initGame();
             initRain();
             canClick = false; // Disable clicks until Start button is pressed
+            
+            // Fail-safe score reset for old "Purata Pakar" entries
+            if (!localStorage.getItem('ebymaster_v2_reset')) {
+                localStorage.removeItem('ebymaster_scores');
+                localStorage.removeItem('ebymaster2_scores');
+                localStorage.removeItem('ebymaster_overall_scores');
+                localStorage.setItem('ebymaster_v2_reset', 'true');
+            }
+
             document.getElementById('vo-level1').play().catch(() => {
                 // Autoplay may be blocked, wait for first click if needed
                 document.addEventListener('click', () => document.getElementById('vo-level1').play(), { once: true });
